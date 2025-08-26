@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>{{ profile.name|default:"Your Name" }}</h1>
+            <p class="hero-subtitle">{{ profile.title|default:"Yazılım Geliştirici & İçerik Üreticisi" }}</p>
+            <p class="hero-bio">{{ profile.bio|default:"Welcome to my portfolio website. I'm a passionate developer creating amazing digital experiences." }}</p>
+            
+            <div class="social-links">
+                {% if profile.twitter_url %}<a href="{{ profile.twitter_url }}" target="_blank" class="social-link">Twitter</a>{% endif %}
+                {% if profile.github_url %}<a href="{{ profile.github_url }}" target="_blank" class="social-link">GitHub</a>{% endif %}
+                {% if profile.linkedin_url %}<a href="{{ profile.linkedin_url }}" target="_blank" class="social-link">LinkedIn</a>{% endif %}
+                {% if profile.cv_url %}<a href="{{ profile.cv_url }}" target="_blank" class="social-link">CV</a>{% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects-section">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+            {% for project in projects %}
+            <div class="project-card">
+                <div class="project-header">
+                    <h3>{{ project.title }}</h3>
+                    <div class="project-actions">
+                        <a href="{{ project.github_url }}" target="_blank" class="btn btn-secondary">GitHub</a>
+                        <a href="{% url 'portfolio:project_detail' project.id %}" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+                <p class="project-description">{{ project.description }}</p>
+                <div class="project-tech">
+                    {% for tech in project.tech_list %}
+                    <span class="tech-tag">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="empty-state">No projects yet. Add some through the admin panel!</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    {% if work_experience %}
+    <section class="experience-section">
+        <h2 class="section-title">Work Experience</h2>
+        <div class="timeline">
+            {% for exp in work_experience %}
+            <div class="timeline-item">
+                <div class="timeline-date">
+                    {{ exp.start_date|date:"M Y" }} - 
+                    {% if exp.current %}Present{% else %}{{ exp.end_date|date:"M Y" }}{% endif %}
+                </div>
+                <div class="timeline-content">
+                    <h3>{{ exp.title }}</h3>
+                    <h4>{{ exp.organization }}</h4>
+                    <p>{{ exp.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Education Section -->
+    {% if education %}
+    <section class="education-section">
+        <h2 class="section-title">Education</h2>
+        <div class="timeline">
+            {% for edu in education %}
+            <div class="timeline-item">
+                <div class="timeline-date">
+                    {{ edu.start_date|date:"M Y" }} - 
+                    {% if edu.current %}Present{% else %}{{ edu.end_date|date:"M Y" }}{% endif %}
+                </div>
+                <div class="timeline-content">
+                    <h3>{{ edu.title }}</h3>
+                    <h4>{{ edu.organization }}</h4>
+                    <p>{{ edu.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

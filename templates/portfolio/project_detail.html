@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ project.title }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="project-detail">
+        <div class="project-detail-header">
+            <a href="{% url 'portfolio:home' %}" class="back-btn">← Back to Portfolio</a>
+            <h1>{{ project.title }}</h1>
+            <div class="project-actions">
+                <a href="{{ project.github_url }}" target="_blank" class="btn btn-secondary">View on GitHub</a>
+            </div>
+        </div>
+
+        {% if project.image %}
+        <div class="project-image">
+            <img src="{{ project.image.url }}" alt="{{ project.title }}">
+        </div>
+        {% endif %}
+
+        <div class="project-content">
+            <div class="project-tech">
+                {% for tech in project.technologies|split:',' %}
+                <span class="tech-tag">{{ tech|strip }}</span>
+                {% endfor %}
+            </div>
+
+            <h2>Overview</h2>
+            <p>{{ project.description }}</p>
+
+            <h2>Details</h2>
+            <div class="project-detail-text">
+                {{ project.detail_text|linebreaks }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

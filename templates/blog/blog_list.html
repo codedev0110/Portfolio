@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="blog-section">
+        <h1 class="page-title">Blog Yazıları</h1>
+        
+        <div class="blog-grid">
+            {% for post in posts %}
+            <article class="blog-card">
+                <div class="blog-header">
+                    <h2><a href="{% url 'blog:detail' post.slug %}">{{ post.title }}</a></h2>
+                    <time class="blog-date">{{ post.created_at|date:"j F Y" }}</time>
+                </div>
+                <p class="blog-excerpt">{{ post.body|truncatewords:30|striptags }}</p>
+                <a href="{% url 'blog:detail' post.slug %}" class="read-more">Read More →</a>
+            </article>
+            {% empty %}
+            <p class="empty-state">No blog posts yet. Add some through the admin panel!</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

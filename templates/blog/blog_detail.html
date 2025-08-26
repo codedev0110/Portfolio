@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <article class="blog-post">
+        <div class="blog-post-header">
+            <a href="{% url 'blog:list' %}" class="back-btn">← Back to Blog</a>
+            <h1>{{ post.title }}</h1>
+            <div class="blog-meta">
+                <time>{{ post.created_at|date:"j F Y" }}</time>
+            </div>
+        </div>
+
+        <div class="blog-content">
+            {{ post.body|linebreaks }}
+        </div>
+
+        <nav class="blog-navigation">
+            {% with post.get_previous as prev %}
+            {% if prev %}
+            <a href="{% url 'blog:detail' prev.slug %}" class="nav-btn nav-prev">
+                ← {{ prev.title }}
+            </a>
+            {% endif %}
+            {% endwith %}
+
+            {% with post.get_next as next %}
+            {% if next %}
+            <a href="{% url 'blog:detail' next.slug %}" class="nav-btn nav-next">
+                {{ next.title }} →
+            </a>
+            {% endif %}
+            {% endwith %}
+        </nav>
+    </article>
+</div>
+{% endblock %}
